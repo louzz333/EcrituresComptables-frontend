@@ -1,0 +1,132 @@
+import { Component, OnInit } from '@angular/core';
+import { EcritureService } from '../ecriture.service';
+import { Ecriture } from '../ecriture';
+import { Kpis } from '../kpis';
+
+
+@Component({
+  selector: 'app-ecritures',
+  templateUrl: './ecritures.component.html',
+  styleUrls: ['./ecritures.component.css']
+})
+export class EcrituresComponent implements OnInit {
+  ecritures: Ecriture[] = [];
+  totalCount: number = 0;
+  filtreLibelle: string = '';
+  filtreJournal: string = '';
+  filtreDateDebut?: Date|string;
+  filtreDateFin?: Date|string;
+  filtreCompteComptable: string = '';
+  filtreRefPiece: string = '';
+  filtreDevise: string = '';
+
+  pageActuelle: number = 1;
+  pageSize: number = 10;
+  Math = Math;
+
+  rechercheAvanceeOuverte: boolean = true;
+
+  motifSuppression?: string = '';
+  confirmationOuverte: boolean = false;
+  selectedIds: number[] = [];
+
+  kpis: Kpis = { totalDebit: 0, totalCredit: 0, enAttente: 0, supprimeesCeMois: 0 };
+
+  constructor(private service: EcritureService) {}
+
+  get totalPages(): number {
+    return Math.ceil(this.totalCount / this.pageSize);
+  }
+
+  get pages(): number[] {
+    const result = [];
+    for (let i = 1; i <= this.totalPages; i++) {
+      result.push(i);
+    }
+    return result;
+  }
+
+  ngOnInit(): void {
+    this.service.getAll(this.filtreLibelle, this.filtreJournal, this.filtreDateDebut, this.filtreDateFin, this.filtreCompteComptable, this.filtreRefPiece, this.filtreDevise, this.pageActuelle, this.pageSize).subscribe(data => {
+      this.ecritures = data.items;
+      this.totalCount = data.totalCount;
+    });
+
+    this.service.getKpis().subscribe(data => {
+      this.kpis = data;
+    });
+  }
+
+  rechercher() {
+    this.pageActuelle = 1;
+    this.service.getAll(this.filtreLibelle, this.filtreJournal, this.filtreDateDebut, this.filtreDateFin, this.filtreCompteComptable, this.filtreRefPiece, this.filtreDevise, this.pageActuelle, this.pageSize).subscribe(data => {
+      this.ecritures = data.items;
+      this.totalCount = data.totalCount;
+    });
+  }
+
+  reinitialiser() {
+  this.filtreLibelle = '';
+  this.filtreJournal = '';
+  this.filtreDateDebut = undefined;
+  this.filtreDateFin = undefined;
+  this.filtreCompteComptable = '';
+  this.filtreRefPiece = '';
+  this.filtreDevise = '';
+  this.rechercher();
+}
+  
+  allerAPage(page: number) {
+    this.pageActuelle = page;
+    this.service.getAll(this.filtreLibelle, this.filtreJournal, this.filtreDateDebut, this.filtreDateFin, this.filtreCompteComptable, this.filtreRefPiece, this.filtreDevise, this.pageActuelle, this.pageSize).subscribe(data => {
+      this.ecritures = data.items;
+      this.totalCount = data.totalCount;
+    });
+  }
+
+  pagePrecedente() {
+  if (this.pageActuelle > 1) {
+    this.allerAPage(this.pageActuelle - 1);
+  }
+}
+
+  pageSuivante() {
+  if (this.pageActuelle < this.totalPages) {
+    this.allerAPage(this.pageActuelle + 1);
+  }
+}
+
+  ouvrirConfirmationSuppression() {
+  this.confirmationOuverte = true;
+}
+
+  confirmerSuppression() {
+  this.service.supprimerEcritures(this.selectedIds, this.motifSuppression).subscribe(() => {
+    this.confirmationOuverte = false;
+    this.motifSuppression = '';
+    this.selectedIds = [];
+    this.rechercher();
+  });
+}
+
+  annulerSuppression() {
+  this.confirmationOuverte = false;
+  this.motifSuppression = '';
+}
+
+  toggleSelection(id: number) {
+  const index = this.selectedIds.indexOf(id);
+  if (index === -1) {
+    this.selectedIds.push(id);
+  } else {
+    this.selectedIds.splice(index, 1);
+  }
+}
+
+  isSelected(id: number): boolean {
+  return this.selectedIds.includes(id);
+}
+}
+
+
+

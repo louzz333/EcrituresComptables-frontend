@@ -1,0 +1,70 @@
+:host {
+  display: block;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.titre-section {
+  color: #1976d2;
+  font-weight: 600;
+  font-size: 15px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #dee2e6;
+  margin-bottom: 16px;
+}
+
+.table-wrapper {
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead th {
+  background-color: #D9E3EB;
+  color: #333;
+  font-weight: 600;
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #dee2e6;
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.empty-message {
+  text-align: center;
+  color: #6c757d;
+  padding: 30px;
+}
+.btn-historique {
+  background-color: white;
+  color: #1976d2;
+  border: 1px solid #1976d2;
+  padding: 9px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-historique:hover {
+  background-color: #eaf2fb;
+}

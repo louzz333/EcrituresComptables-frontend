@@ -1,0 +1,157 @@
+<!-- ============ SECTION 1 : Recherche  ============ -->
+<div class="search-panel">
+  <div class="search-panel-header" (click)="rechercheAvanceeOuverte = !rechercheAvanceeOuverte">
+    <span class="chevron" [class.open]="rechercheAvanceeOuverte">▾</span>
+    <span class="titre">Filtres de recherche</span>
+  </div>
+
+  <div class="search-panel-body" *ngIf="rechercheAvanceeOuverte">
+    <div class="filtres-grid">
+      <div class="champ">
+        <label>Libellé</label>
+        <input type="text" [(ngModel)]="filtreLibelle" />
+      </div>
+
+      <div class="champ">
+        <label>Référence de pièce</label>
+        <input type="text" [(ngModel)]="filtreRefPiece" />
+      </div>
+
+      <div class="champ">
+        <label>Devise</label>
+        <input type="text" [(ngModel)]="filtreDevise" />
+      </div>
+
+      <div class="champ">
+        <label>Compte comptable</label>
+        <input type="text" [(ngModel)]="filtreCompteComptable" />
+      </div>
+
+      <div class="champ">
+        <label>Journal</label>
+        <select [(ngModel)]="filtreJournal">
+          <option value="">Tous les journaux</option>
+          <option value="ACH">ACH</option>
+          <option value="AWB">AWB</option>
+          <option value="CDM">CDM</option>
+        </select>
+      </div>
+
+      <div class="champ champ-double">
+        <label>Date</label>
+        <div class="champ-double-inputs">
+          <input type="date" [(ngModel)]="filtreDateDebut" />
+          <span>á</span>
+          <input type="date" [(ngModel)]="filtreDateFin" />
+        </div>
+      </div>
+    </div>
+
+    <div class="filtres-actions">
+      <button class="btn-primaire" (click)="rechercher()">Rechercher</button>
+      <button class="btn-secondaire" (click)="reinitialiser()">Réinitialiser</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 2 : KPIs ============ -->
+<div class="kpi-container">
+  <div class="kpi-card">
+    <span>Écritures en attente</span>
+    <strong>{{ kpis.enAttente }}</strong>
+  </div>
+  <div class="kpi-card">
+    <span>Total Débit</span>
+    <strong>{{ kpis.totalDebit }}</strong>
+  </div>
+  <div class="kpi-card">
+    <span>Total Crédit</span>
+    <strong>{{ kpis.totalCredit }}</strong>
+  </div>
+  <div class="kpi-card">
+    <span>Supprimées ce mois</span>
+    <strong>{{ kpis.supprimeesCeMois }}</strong>
+  </div>
+</div>
+
+<!-- ============ SECTION 3 : Titre + Tableau ============ -->
+<div class="titre-section">Ecritures comptable</div>
+
+<div class="actions-tableau">
+  <button 
+    class="btn-danger" 
+    [disabled]="selectedIds.length === 0"
+    (click)="ouvrirConfirmationSuppression()">
+    Supprimer la sélection ({{ selectedIds.length }})
+  </button>
+
+  <button class="btn-historique" routerLink="/historique">
+    Historique
+  </button>
+</div>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr class="header-row">
+        <th></th>
+        <th>N° Pièce</th>
+        <th>Date</th>
+        <th>Journal</th>
+        <th>Compte</th>
+        <th>Débit</th>
+        <th>Crédit</th>
+        <th>Référence</th>
+        <th>Devise</th>
+        <th>Libellé</th>
+      </tr>
+      
+    </thead>
+    <tbody>
+      <tr *ngFor="let e of ecritures">
+        <td>
+         <input type="checkbox" 
+         [checked]="isSelected(e.cleMvt)" 
+         (change)="toggleSelection(e.cleMvt)" />
+        </td>
+        <td>{{ e.n_Ecriture }}</td>
+        <td>{{ e.date }}</td>
+        <td>{{ e.journal }}</td>
+        <td>{{ e.compte_comptable }}</td>
+        <td class="text-rightd">{{ e.sens === 'D' ? e.montant : '__' }}</td>
+        <td class="text-rightc">{{ e.sens === 'C' ? e.montant : '__' }}</td>
+        <td>{{ e.reference_Piece }}</td>
+        <td>{{ e.devise }}</td>
+        <td>{{ e.libelle_Ecriture }}</td>
+      </tr>
+      <tr *ngIf="ecritures.length === 0">
+        <td colspan="9" class="empty-message">Pas d'enregistrements</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- ============ SECTION 4 : suppression ============ -->
+<div class="modal" *ngIf="confirmationOuverte">
+  <div class="modal-content">
+    <p>Supprimer {{ selectedIds.length }} écriture(s) ?</p>
+    <input type="text" [(ngModel)]="motifSuppression" placeholder="Motif de suppression..." />
+    <button (click)="confirmerSuppression()">Confirmer</button>
+    <button (click)="annulerSuppression()">Annuler</button>
+  </div>
+</div>
+
+<!-- ============ SECTION 5 : Pagination ============ -->
+<div class="pagination-bar">
+  <button (click)="allerAPage(1)" [disabled]="pageActuelle === 1">«</button>
+  <button (click)="pagePrecedente()" [disabled]="pageActuelle === 1">‹</button>
+
+  <input type="number" class="page-input" [(ngModel)]="pageActuelle" (change)="allerAPage(pageActuelle)" />
+
+  <button (click)="pageSuivante()" [disabled]="pageActuelle === totalPages">›</button>
+  <button (click)="allerAPage(totalPages)" [disabled]="pageActuelle === totalPages">»</button>
+
+  <span class="affichage-info">
+    Affichage de {{ (pageActuelle - 1) * pageSize + 1 }} à {{ Math.min(pageActuelle * pageSize, totalCount) }}
+    de {{ totalCount }} entrées
+  </span>
+</div>
