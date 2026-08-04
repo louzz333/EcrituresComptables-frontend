@@ -1,5 +1,5 @@
 /* ===========================================
-   Variables de couleur (style entreprise)
+   Variables & Host
    =========================================== */
 :host {
   --bleu-principal: #1976d2;
@@ -10,16 +10,21 @@
 
   display: block;
   font-family: 'Segoe UI', Arial, sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
   padding: 20px;
+  
 }
 
 
+* {
+  box-sizing: border-box;
+}
 
 /* ===========================================
-   Panneau "Recherche " 
+   Panneau "Recherche"
    =========================================== */
+
 .search-panel {
   background-color: white;
   border: 1px solid var(--gris-bordure);
@@ -69,13 +74,13 @@
 .champ label {
   font-size: 13px;
   font-weight: 600;
-  color: #333;
+  color: rgb(37, 69, 84);
 }
 
 .champ input,
 .champ select {
   padding: 8px 10px;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(37, 69, 84);
   border-radius: 4px;
   font-size: 14px;
 }
@@ -97,7 +102,7 @@
 }
 
 .btn-primaire {
-  background-color: var(--bleu-principal);
+  background-color: #1976d2;
   color: white;
   border: none;
   padding: 9px 22px;
@@ -125,16 +130,12 @@
   background-color: #f0f0f0;
 }
 
-.champ>label{
-  color: rgb(37, 69, 84);
-}
-
 /* ===========================================
    KPIs
    =========================================== */
 .kpi-container {
   display: flex;
-  gap: 16px;
+  gap: 18px;
   margin-bottom: 24px;
 }
 
@@ -142,34 +143,109 @@
   flex: 1;
   background-color: white;
   border: 1px solid var(--gris-bordure);
-  border-radius: 6px;
-  padding: 16px;
-  text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  padding: 18px 20px;
+  transition: transform 0.2s ease;
 }
 
-.kpi-card span {
-  display: block;
-  font-size: 13px;
-  color: rgb(37,69,84);
-  margin-bottom: 6px;
+.kpi-card:hover {
+  transform: translateY(-2px);
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.kpi-header span {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8a8f98;
+}
+
+.kpi-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.icon-attente {
+  background-color: #fff3e0;
+  color: #ff9800;
+}
+
+.icon-debit {
+  background-color: #fdecea;
+  color: #dc3545;
+}
+
+.icon-credit {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.icon-supprime {
+  background-color: #f3f0fa;
+  color: #6c63b3;
 }
 
 .kpi-card strong {
-  font-size: 24px;
+  display: block;
+  font-size: 26px;
+  font-weight: 700;
   color: #222;
 }
 
 /* ===========================================
-   Titre de section
+   Titre de section + actions
    =========================================== */
+.titre-ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--gris-bordure);
+  margin-bottom: 16px;
+}
+
 .titre-section {
   color: var(--bleu-principal);
   font-weight: 600;
   font-size: 15px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--gris-bordure);
-  margin-bottom: 12px;
+  white-space: nowrap;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #a09798;
+}
+
+.btn-danger:disabled {
+  background-color: #dad3d3;
+  color: white;
+  opacity: 1;
+  cursor: not-allowed;
 }
 
 /* ===========================================
@@ -187,6 +263,12 @@ table {
   border-collapse: collapse;
   font-size: 14px;
 }
+.compteur {
+  color: #999;
+  font-weight: 400;
+  font-size: 13px;
+  margin-left: 10px;
+}
 
 thead .header-row th {
   background-color: #D9E3EB;
@@ -203,8 +285,6 @@ thead .filter-row th {
   background-color: var(--gris-fond);
   border-bottom: 2px solid var(--gris-bordure);
 }
-
-
 
 tbody td {
   padding: 10px 12px;
@@ -231,6 +311,9 @@ tbody tr:hover {
   padding: 30px;
 }
 
+/* ===========================================
+   Pagination
+   =========================================== */
 .pagination-bar {
   display: flex;
   align-items: center;
@@ -238,83 +321,51 @@ tbody tr:hover {
   gap: 8px;
   margin-top: 20px;
   flex-wrap: wrap;
+  background-color: #D9E3EB;
 }
 
 .pagination-bar button {
   width: 32px;
   height: 32px;
-  border-radius: 4px;
-  border: 1px solid var(--gris-bordure);
-  background-color: white;
+  border: none;
+  background-color: transparent;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
+  color: #555;
+  transition: background-color 0.2s ease;
+}
+
+.pagination-bar button:hover:not(:disabled) {
+  background-color: #eee;
 }
 
 .pagination-bar button:disabled {
-  opacity: 0.4;
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
 .page-input {
-  width: 50px;
+  width: 36px;
+  height: 32px;
   text-align: center;
-  padding: 6px;
-  border: 1px solid var(--gris-bordure);
-  border-radius: 4px;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 4px;
 }
 
 .affichage-info {
   margin-left: 16px;
   font-size: 13px;
-  color: var(--texte-gris);
+  color: #6c757d;
 }
 
-.actions-tableau {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.btn-danger:hover:not(:disabled) {
-  background-color: #a09798;
-}
-
-.btn-danger:disabled {
-  background-color: #dad3d3;
-  color: white;
-  opacity: 1;
-  cursor: not-allowed;
-}
-
-.btn-historique {
-  background-color: white;
-  color: #1976d2;
-  border: 1px solid #1976d2;
-  padding: 9px 20px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.btn-historique:hover {
-  background-color: #eaf2fb;
-}
-
+/* ===========================================
+   Modal de confirmation (suppression)
+   =========================================== */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -344,7 +395,6 @@ tbody tr:hover {
   margin: 12px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box;
 }
 
 .modal-actions {
@@ -370,3 +420,4 @@ tbody tr:hover {
   background-color: #e0e0e0;
   color: #333;
 }
+

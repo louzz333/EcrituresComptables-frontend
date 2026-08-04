@@ -57,6 +57,29 @@ export class EcrituresComponent implements OnInit {
     });
   }
 
+  toggleSelectAll(event: Event) {
+  const checked = (event.target as HTMLInputElement).checked;
+  if (checked) {
+    this.service.getAllIds(
+      this.filtreLibelle,
+      this.filtreJournal,
+      this.filtreDateDebut,
+      this.filtreDateFin,
+      this.filtreCompteComptable,
+      this.filtreRefPiece,
+      this.filtreDevise
+    ).subscribe(ids => {
+      this.selectedIds = ids;
+    });
+  } else {
+    this.selectedIds = [];
+  }
+}
+
+isAllSelected(): boolean {
+  return this.totalCount > 0 && this.selectedIds.length === this.totalCount;
+}
+
   rechercher() {
     this.pageActuelle = 1;
     this.service.getAll(this.filtreLibelle, this.filtreJournal, this.filtreDateDebut, this.filtreDateFin, this.filtreCompteComptable, this.filtreRefPiece, this.filtreDevise, this.pageActuelle, this.pageSize).subscribe(data => {
@@ -101,6 +124,11 @@ export class EcrituresComponent implements OnInit {
 }
 
   confirmerSuppression() {
+  if (!this.motifSuppression || this.motifSuppression.trim() === '') {
+    alert('Le motif est obligatoire.');
+    return;
+  }
+
   this.service.supprimerEcritures(this.selectedIds, this.motifSuppression).subscribe(() => {
     this.confirmationOuverte = false;
     this.motifSuppression = '';
@@ -126,6 +154,7 @@ export class EcrituresComponent implements OnInit {
   isSelected(id: number): boolean {
   return this.selectedIds.includes(id);
 }
+
 }
 
 

@@ -1,6 +1,13 @@
-<nav class="nav-simple">
-  <a routerLink="/"></a>
-  <a routerLink="/historique"></a>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <button class="menu-icon" (click)="toggleMenu()">☰</button>
+    <span class="navbar-titre">Supervision écritures comptables</span>
+
+    <div class="navbar-liens">
+      <a routerLink="/">Écritures</a>
+      <a routerLink="/historique">Historique</a>
+    </div>
+  </div>
 </nav>
 
 <router-outlet></router-outlet>

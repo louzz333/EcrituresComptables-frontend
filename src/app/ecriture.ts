@@ -16,4 +16,5 @@ export interface Ecriture {
   section_Analytique?: string;
   typE_PIECE?: string;
   societe?: string;
+  etatComptabilisation?: number;
 }

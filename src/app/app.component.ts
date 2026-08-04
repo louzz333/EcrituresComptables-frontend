@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'ecritures-front';
+  menuOuvert: boolean = false;
+
+  toggleMenu() {
+    this.menuOuvert = !this.menuOuvert;
+  }
+
+  fermerMenu() {
+    this.menuOuvert = false;
+  }
 }

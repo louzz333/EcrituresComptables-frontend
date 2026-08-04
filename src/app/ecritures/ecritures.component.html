@@ -1,4 +1,46 @@
-<!-- ============ SECTION 1 : Recherche  ============ -->
+<!-- ============ SECTION 1 : KPIs ============ -->
+<div class="kpi-container">
+  <div class="kpi-card">
+    <div class="kpi-header">
+      <span>Écritures en attente</span>
+      <div class="kpi-icon icon-attente">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 10.59V6h-2v6.41l4.29 4.29 1.42-1.42z"/></svg>
+      </div>
+    </div>
+    <strong id="card1">{{ kpis.enAttente }}</strong>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-header">
+      <span>Total Débit</span>
+      <div class="kpi-icon icon-debit">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 4l8 10h-5v6h-6v-6H4z"/></svg>
+      </div>
+    </div>
+    <strong id="card2">{{ kpis.totalDebit }}</strong>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-header">
+      <span>Total Crédit</span>
+      <div class="kpi-icon icon-credit">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 20l-8-10h5V4h6v6h5z"/></svg>
+      </div>
+    </div>
+    <strong id="card3">{{ kpis.totalCredit }}</strong>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-header">
+      <span>Supprimées ce mois</span>
+      <div class="kpi-icon icon-supprime">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6 7h12l-1 13H7L6 7zm3-3h6l1 2H8l1-2z"/></svg>
+      </div>
+    </div>
+    <strong id="card4">{{ kpis.supprimeesCeMois }}</strong>
+  </div>
+</div>
+ <!-- ============ SECTION 2 : Recherche  ============ -->
 <div class="search-panel">
   <div class="search-panel-header" (click)="rechercheAvanceeOuverte = !rechercheAvanceeOuverte">
     <span class="chevron" [class.open]="rechercheAvanceeOuverte">▾</span>
@@ -54,39 +96,17 @@
   </div>
 </div>
 
-<!-- ============ SECTION 2 : KPIs ============ -->
-<div class="kpi-container">
-  <div class="kpi-card">
-    <span>Écritures en attente</span>
-    <strong>{{ kpis.enAttente }}</strong>
-  </div>
-  <div class="kpi-card">
-    <span>Total Débit</span>
-    <strong>{{ kpis.totalDebit }}</strong>
-  </div>
-  <div class="kpi-card">
-    <span>Total Crédit</span>
-    <strong>{{ kpis.totalCredit }}</strong>
-  </div>
-  <div class="kpi-card">
-    <span>Supprimées ce mois</span>
-    <strong>{{ kpis.supprimeesCeMois }}</strong>
-  </div>
-</div>
-
 <!-- ============ SECTION 3 : Titre + Tableau ============ -->
-<div class="titre-section">Ecritures comptable</div>
-
-<div class="actions-tableau">
+<div class="titre-ligne">
+  <div class="titre-section">
+  Écritures comptables
+  <span class="compteur">{{ totalCount }} écritures</span>
+</div>
   <button 
     class="btn-danger" 
     [disabled]="selectedIds.length === 0"
     (click)="ouvrirConfirmationSuppression()">
     Supprimer la sélection ({{ selectedIds.length }})
-  </button>
-
-  <button class="btn-historique" routerLink="/historique">
-    Historique
   </button>
 </div>
 
@@ -94,13 +114,18 @@
   <table>
     <thead>
       <tr class="header-row">
-        <th></th>
+        <th>
+  <input type="checkbox"
+         [checked]="isAllSelected()"
+         (change)="toggleSelectAll($event)" />
+</th>
         <th>N° Pièce</th>
         <th>Date</th>
         <th>Journal</th>
         <th>Compte</th>
         <th>Débit</th>
         <th>Crédit</th>
+        <th>Statut</th>
         <th>Référence</th>
         <th>Devise</th>
         <th>Libellé</th>
@@ -120,6 +145,7 @@
         <td>{{ e.compte_comptable }}</td>
         <td class="text-rightd">{{ e.sens === 'D' ? e.montant : '__' }}</td>
         <td class="text-rightc">{{ e.sens === 'C' ? e.montant : '__' }}</td>
+        <td>{{ e.etatComptabilisation === 0 ? 'En attente' : 'Envoyé à Sage' }}</td>
         <td>{{ e.reference_Piece }}</td>
         <td>{{ e.devise }}</td>
         <td>{{ e.libelle_Ecriture }}</td>
@@ -131,12 +157,14 @@
   </table>
 </div>
 <!-- ============ SECTION 4 : suppression ============ -->
-<div class="modal" *ngIf="confirmationOuverte">
+<div class="modal-overlay" *ngIf="confirmationOuverte">
   <div class="modal-content">
     <p>Supprimer {{ selectedIds.length }} écriture(s) ?</p>
     <input type="text" [(ngModel)]="motifSuppression" placeholder="Motif de suppression..." />
-    <button (click)="confirmerSuppression()">Confirmer</button>
-    <button (click)="annulerSuppression()">Annuler</button>
+    <div class="modal-actions">
+      <button (click)="confirmerSuppression()">Confirmer</button>
+      <button (click)="annulerSuppression()">Annuler</button>
+    </div>
   </div>
 </div>
 

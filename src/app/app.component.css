@@ -1,0 +1,40 @@
+.navbar {
+  background-color: rgb(0, 72, 153);
+  color: white;
+  width: 100%;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.navbar-titre {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.navbar-liens {
+  display: flex;
+  gap: 24px;
+  margin-left: auto;
+}
+
+.navbar-liens a {
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.navbar-liens a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}

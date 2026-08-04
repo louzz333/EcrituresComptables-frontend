@@ -1,28 +1,97 @@
+
+
+<!-- ============ SECTION : Recherche ============ -->
+<div class="search-panel">
+  <div class="search-panel-header" (click)="rechercheAvanceeOuverte = !rechercheAvanceeOuverte">
+    <span class="chevron" [class.open]="rechercheAvanceeOuverte">▾</span>
+    <span class="titre">Filtres de recherche</span>
+  </div>
+
+  <div class="search-panel-body" *ngIf="rechercheAvanceeOuverte">
+    <div class="filtres-grid">
+      <div class="champ">
+        <label>Libellé</label>
+        <input type="text" [(ngModel)]="filtreLibelle" />
+      </div>
+
+      <div class="champ">
+        <label>Référence de pièce</label>
+        <input type="text" [(ngModel)]="filtreRefPiece" />
+      </div>
+
+      <div class="champ">
+        <label>Devise</label>
+        <input type="text" [(ngModel)]="filtreDevise" />
+      </div>
+
+      <div class="champ">
+        <label>Compte comptable</label>
+        <input type="text" [(ngModel)]="filtreCompteComptable" />
+      </div>
+
+      <div class="champ">
+        <label>Journal</label>
+        <select [(ngModel)]="filtreJournal">
+          <option value="">Tous les journaux</option>
+          <option value="ACH">ACH</option>
+          <option value="AWB">AWB</option>
+          <option value="CDM">CDM</option>
+        </select>
+      </div>
+
+      <div class="champ champ-double">
+        <label>Date</label>
+        <div class="champ-double-inputs">
+          <input type="date" [(ngModel)]="filtreDateDebut" />
+          <span>á</span>
+          <input type="date" [(ngModel)]="filtreDateFin" />
+        </div>
+      </div>
+    </div>
+
+    <div class="filtres-actions">
+      <button class="btn-primaire" (click)="rechercher()">Rechercher</button>
+      <button class="btn-secondaire" (click)="reinitialiser()">Réinitialiser</button>
+    </div>
+  </div>
+</div>
+
 <div class="titre-section">Historique des suppressions</div>
-<button class="btn-historique" routerLink="/">
-  ← Retour aux écritures
-</button>
 
 <div class="table-wrapper">
-  <table>
-    <thead>
-      <tr>
-        <th>N° Écriture</th>
-        <th>Libellé</th>
-        <th>Date de suppression</th>
-        <th>Motif</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let h of historique">
-        <td>{{ h.numeroEcriture }}</td>
-        <td>{{ h.libelle }}</td>
-        <td>{{ h.dateSuppression }}</td>
-        <td>{{ h.motif }}</td>
-      </tr>
-      <tr *ngIf="historique.length === 0">
-        <td colspan="4" class="empty-message">Aucune suppression enregistrée</td>
-      </tr>
-    </tbody>
-  </table>
+<table>
+  <thead>
+    <tr>
+      <th>N° Pièce</th>
+      <th>Date</th>
+      <th>Journal</th>
+      <th>Compte</th>
+      <th>Débit</th>
+      <th>Crédit</th>
+      <th>Référence</th>
+      <th>Devise</th>
+      <th>Libellé</th>
+      <th>Date suppression</th>
+      <th>Motif</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let h of historique">
+      <td>{{ h.numeroEcriture }}</td>
+      <td>{{ h.dateEcriture }}</td>
+      <td>{{ h.journalEcriture }}</td>
+      <td>{{ h.compteEcriture }}</td>
+      <td class="text-rightd">{{ h.sensEcriture === 'D' ? h.montantEcriture : '__' }}</td>
+      <td class="text-rightc">{{ h.sensEcriture === 'C' ? h.montantEcriture : '__' }}</td>
+      <td>{{ h.referenceEcriture }}</td>
+      <td>{{ h.deviseEcriture }}</td>
+      <td>{{ h.libelle }}</td>
+      <td>{{ h.dateSuppression }}</td>
+      <td>{{ h.motif }}</td>
+    </tr>
+    <tr *ngIf="historique.length === 0">
+      <td colspan="11" class="empty-message">Aucune suppression enregistrée</td>
+    </tr>
+  </tbody>
+</table>
 </div>
