@@ -1,5 +1,5 @@
 /* ===========================================
-   Variables & Host
+   1. Variables & Host
    =========================================== */
 :host {
   --bleu-principal: #1976d2;
@@ -11,21 +11,26 @@
   display: block;
   font-family: 'Segoe UI', Arial, sans-serif;
   width: 100%;
-  max-width: 100%;
   padding: 20px;
-  
+  /* FIX PRINCIPAL : sans ceci, :host mesure 100% + 40px (20px de padding
+     de chaque côté) car le sélecteur global "*" ne s'applique pas forcément
+     à l'hôte du composant selon l'encapsulation Angular. C'est cette
+     largeur excédentaire qui provoquait la glissière horizontale au
+     niveau de la page entière. */
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: hidden; /* filet de sécurité supplémentaire au niveau du composant */
 }
-
 
 * {
   box-sizing: border-box;
 }
 
 /* ===========================================
-   Panneau "Recherche"
+   2. Panneau "Recherche" (filtres) — 100% width
    =========================================== */
-
 .search-panel {
+  width: 100%;
   background-color: white;
   border: 1px solid var(--gris-bordure);
   border-radius: 6px;
@@ -69,6 +74,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0; /* évite qu'un input/select élargisse sa colonne de grille
+                    au-delà de la largeur disponible */
 }
 
 .champ label {
@@ -83,26 +90,31 @@
   border: 1px solid rgb(37, 69, 84);
   border-radius: 4px;
   font-size: 14px;
+  width: 100%;
+  min-width: 0;
 }
 
 .champ-double-inputs {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
 }
 
 .champ-double-inputs input {
   flex: 1;
+  min-width: 0;
 }
 
 .filtres-actions {
   display: flex;
   gap: 10px;
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .btn-primaire {
-  background-color: #1976d2;
+  background-color: var(--bleu-principal);
   color: white;
   border: none;
   padding: 9px 22px;
@@ -129,41 +141,49 @@
 .btn-secondaire:hover {
   background-color: #f0f0f0;
 }
-
 /* ===========================================
-   KPIs
+   3. KPIs
    =========================================== */
 .kpi-container {
+  width: 100%;
   display: flex;
+  flex-wrap: wrap;
   gap: 18px;
   margin-bottom: 24px;
 }
 
 .kpi-card {
-  flex: 1;
+  flex: 1 1 220px;
   background-color: white;
   border: 1px solid var(--gris-bordure);
-  border-radius: 10px;
-  padding: 18px 20px;
-  transition: transform 0.2s ease;
+  border-radius: 18px;
+  padding: 20px 22px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .kpi-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
+
+.kpi-attente { background: linear-gradient(180deg, #ffffff 0%, #fffaf3 100%); }
+.kpi-debit   { background: linear-gradient(180deg, #ffffff 0%, #fdf5f5 100%); }
+.kpi-credit  { background: linear-gradient(180deg, #ffffff 0%, #f4faf5 100%); }
+.kpi-supprime{ background: linear-gradient(180deg, #ffffff 0%, #f8f6fc 100%); }
 
 .kpi-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .kpi-header span {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   color: #8a8f98;
 }
 
@@ -171,47 +191,50 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
 
-.icon-attente {
-  background-color: #fff3e0;
-  color: #ff9800;
-}
-
-.icon-debit {
-  background-color: #fdecea;
-  color: #dc3545;
-}
-
-.icon-credit {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
-
-.icon-supprime {
-  background-color: #f3f0fa;
-  color: #6c63b3;
-}
+.icon-attente { background-color: #fff3e0; color: #ff9800; }
+.icon-debit   { background-color: #fdecea; color: #dc3545; }
+.icon-credit  { background-color: #e8f5e9; color: #2e7d32; }
+.icon-supprime{ background-color: #f3f0fa; color: #6c63b3; }
 
 .kpi-card strong {
   display: block;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
-  color: #222;
+  color: #1a1a1a;
+  letter-spacing: -0.3px;
+}
+
+.kpi-card .unite {
+  font-size: 15px;
+  font-weight: 600;
+  color: #999;
+}
+
+/* Responsive : empile proprement sous 700px */
+@media (max-width: 700px) {
+  .kpi-container {
+    flex-direction: column;
+  }
+  .kpi-card {
+    flex: 1 1 auto;
+  }
 }
 
 /* ===========================================
-   Titre de section + actions
+   4. Titre de section + actions
    =========================================== */
 .titre-ligne {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: nowrap;
+  flex-wrap: wrap; /* passe à la ligne plutôt que de déborder sur petit écran */
+  gap: 12px;
   padding-bottom: 8px;
   border-bottom: 2px solid var(--gris-bordure);
   margin-bottom: 16px;
@@ -222,6 +245,13 @@
   font-weight: 600;
   font-size: 15px;
   white-space: nowrap;
+}
+
+.compteur {
+  color: #999;
+  font-weight: 400;
+  font-size: 13px;
+  margin-left: 10px;
 }
 
 .btn-danger {
@@ -249,25 +279,22 @@
 }
 
 /* ===========================================
-   Tableau
+   5. Tableau — 100% width, glissière INTERNE seulement
    =========================================== */
 .table-wrapper {
+  width: 100%;
+  max-width: 100%;
   background-color: white;
   border: 1px solid var(--gris-bordure);
   border-radius: 6px;
-  overflow-x: auto;
+  overflow-x: auto;   /* <- seule source de scroll horizontal autorisée */
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
-}
-.compteur {
-  color: #999;
-  font-weight: 400;
-  font-size: 13px;
-  margin-left: 10px;
 }
 
 thead .header-row th {
@@ -295,15 +322,8 @@ tbody tr:hover {
   background-color: #f8f9fa;
 }
 
-.text-rightd {
-  text-align: right;
-  color: rgb(177, 9, 43);
-}
-
-.text-rightc {
-  text-align: right;
-  color: forestgreen;
-}
+.text-rightd { text-align: right; color: rgb(177, 9, 43); }
+.text-rightc { text-align: right; color: forestgreen; }
 
 .empty-message {
   text-align: center;
@@ -312,9 +332,10 @@ tbody tr:hover {
 }
 
 /* ===========================================
-   Pagination
+   6. Pagination — 100% width
    =========================================== */
 .pagination-bar {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -322,6 +343,7 @@ tbody tr:hover {
   margin-top: 20px;
   flex-wrap: wrap;
   background-color: #D9E3EB;
+  box-sizing: border-box;
 }
 
 .pagination-bar button {
@@ -364,7 +386,7 @@ tbody tr:hover {
 }
 
 /* ===========================================
-   Modal de confirmation (suppression)
+   7. Modal de confirmation (suppression)
    =========================================== */
 .modal-overlay {
   position: fixed;
@@ -381,7 +403,9 @@ tbody tr:hover {
   padding: 24px;
   border-radius: 8px;
   min-width: 350px;
+  max-width: 90vw; /* pour rester contenu sur petits écrans */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
 }
 
 .modal-content p {
@@ -395,6 +419,7 @@ tbody tr:hover {
   margin: 12px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .modal-actions {
@@ -412,7 +437,7 @@ tbody tr:hover {
 }
 
 .modal-actions button:first-child {
-  background-color: #1976d2;
+  background-color: var(--bleu-principal);
   color: white;
 }
 
@@ -420,4 +445,3 @@ tbody tr:hover {
   background-color: #e0e0e0;
   color: #333;
 }
-

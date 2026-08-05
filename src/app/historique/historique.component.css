@@ -1,80 +1,38 @@
+/* ===========================================
+   1. Variables & Host
+   =========================================== */
 :host {
+  --bleu-principal: #1976d2;
+  --bleu-fonce: #124a86;
+  --gris-fond: #f4f6f8;
+  --gris-bordure: #dee2e6;
+  --texte-gris: #6c757d;
+
   display: block;
   font-family: 'Segoe UI', Arial, sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.titre-section {
-  color: #1976d2;
-  font-weight: 600;
-  font-size: 15px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #dee2e6;
-  margin-bottom: 16px;
-}
-
-.table-wrapper {
-  background-color: white;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  overflow-x: auto;
-}
-
-table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
+  padding: 20px;
+  /* FIX PRINCIPAL : sans ceci, :host mesure 100% + 40px (20px de padding
+     de chaque côté) car le sélecteur global "*" ne s'applique pas forcément
+     à l'hôte du composant selon l'encapsulation Angular. C'est cette
+     largeur excédentaire qui provoquait la glissière horizontale au
+     niveau de la page entière. */
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: hidden; /* filet de sécurité supplémentaire au niveau du composant */
 }
 
-thead th {
-  background-color: #D9E3EB;
-  color: #333;
-  font-weight: 600;
-  text-align: left;
-  padding: 12px;
-  border-bottom: 1px solid #dee2e6;
-  white-space: nowrap;
+* {
+  box-sizing: border-box;
 }
 
-tbody td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #eee;
-}
-
-tbody tr:hover {
-  background-color: #f8f9fa;
-}
-
-.empty-message {
-  text-align: center;
-  color: #6c757d;
-  padding: 30px;
-}
-.btn-historique {
-  background-color: white;
-  color: #1976d2;
-  border: 1px solid #1976d2;
-  padding: 9px 20px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 16px;
-  transition: background-color 0.2s ease;
-}
-
-.btn-historique:hover {
-  background-color: #eaf2fb;
-}
 /* ===========================================
-   Panneau "Recherche"
+   2. Panneau "Recherche" (filtres) — 100% width
    =========================================== */
-
 .search-panel {
+  width: 100%;
   background-color: white;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--gris-bordure);
   border-radius: 6px;
   margin-bottom: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -86,7 +44,7 @@ tbody tr:hover {
   gap: 8px;
   padding: 16px 20px;
   cursor: pointer;
-  color: #1976d2;
+  color: var(--bleu-principal);
   font-weight: 600;
   font-size: 15px;
 }
@@ -102,7 +60,7 @@ tbody tr:hover {
 
 .search-panel-body {
   padding: 0 20px 20px 20px;
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid var(--gris-bordure);
 }
 
 .filtres-grid {
@@ -116,6 +74,8 @@ tbody tr:hover {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0; /* évite qu'un input/select élargisse sa colonne de grille
+                    au-delà de la largeur disponible */
 }
 
 .champ label {
@@ -130,26 +90,31 @@ tbody tr:hover {
   border: 1px solid rgb(37, 69, 84);
   border-radius: 4px;
   font-size: 14px;
+  width: 100%;
+  min-width: 0;
 }
 
 .champ-double-inputs {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
 }
 
 .champ-double-inputs input {
   flex: 1;
+  min-width: 0;
 }
 
 .filtres-actions {
   display: flex;
   gap: 10px;
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .btn-primaire {
-  background-color: #1976d2;
+  background-color: var(--bleu-principal);
   color: white;
   border: none;
   padding: 9px 22px;
@@ -160,7 +125,7 @@ tbody tr:hover {
 }
 
 .btn-primaire:hover {
-  background-color: #145a9e;
+  background-color: var(--bleu-fonce);
 }
 
 .btn-secondaire {
@@ -176,12 +141,149 @@ tbody tr:hover {
 .btn-secondaire:hover {
   background-color: #f0f0f0;
 }
-.text-rightd {
-  text-align: right;
-  color: rgb(177, 9, 43);
+
+/* ===========================================
+   3. Titre de section + bouton retour
+   =========================================== */
+.titre-ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* passe à la ligne plutôt que de déborder sur petit écran */
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--gris-bordure);
+  margin-bottom: 16px;
 }
 
-.text-rightc {
-  text-align: right;
-  color: forestgreen;
+.titre-section {
+  color: var(--bleu-principal);
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.compteur {
+  color: #999;
+  font-weight: 400;
+  font-size: 13px;
+  margin-left: 10px;
+}
+
+.btn-historique {
+  background-color: white;
+  color: var(--bleu-principal);
+  border: 1px solid var(--bleu-principal);
+  padding: 9px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.btn-historique:hover {
+  background-color: #eaf2fb;
+}
+
+/* ===========================================
+   4. Tableau — 100% width, glissière INTERNE seulement
+   =========================================== */
+.table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  background-color: white;
+  border: 1px solid var(--gris-bordure);
+  border-radius: 6px;
+  overflow-x: auto;   /* <- seule source de scroll horizontal autorisée */
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead th {
+  background-color: #D9E3EB;
+  color: rgb(37, 69, 84);
+  font-weight: 600;
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid var(--gris-bordure);
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.text-rightd { text-align: right; color: rgb(177, 9, 43); }
+.text-rightc { text-align: right; color: forestgreen; }
+
+.empty-message {
+  text-align: center;
+  color: var(--texte-gris);
+  padding: 30px;
+}
+
+/* ===========================================
+   5. Pagination — 100% width
+   =========================================== */
+.pagination-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  background-color: #D9E3EB;
+  box-sizing: border-box;
+}
+
+.pagination-bar button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-color: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+  transition: background-color 0.2s ease;
+}
+
+.pagination-bar button:hover:not(:disabled) {
+  background-color: #eee;
+}
+
+.pagination-bar button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.page-input {
+  width: 36px;
+  height: 32px;
+  text-align: center;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 4px;
+}
+
+.affichage-info {
+  margin-left: 16px;
+  font-size: 13px;
+  color: #6c757d;
 }

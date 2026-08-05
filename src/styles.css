@@ -1,9 +1,15 @@
-html {
-  overflow-y: scroll;
-}
-
+/* ===========================================
+   Reset global — pas de padding parasite
+   =========================================== */
 html, body {
   margin: 0;
-  max-width: 100%;
   padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }

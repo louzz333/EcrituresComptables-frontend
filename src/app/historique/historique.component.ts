@@ -23,35 +23,39 @@ export class HistoriqueComponent implements OnInit {
 
   page = 1;
   pageSize = 10;
+  Math = Math;
 
   constructor(private service: EcritureService) {}
+
+  get totalPages(): number {
+    return Math.ceil(this.totalCount / this.pageSize);
+  }
 
   ngOnInit(): void {
     this.chargerHistorique();
   }
 
   chargerHistorique(): void {
-  this.service.getHistorique(
-    this.filtreLibelle,
-    this.filtreJournal,
-    this.filtreDateDebut,
-    this.filtreDateFin,
-    this.filtreCompteComptable,
-    this.filtreRefPiece,
-    this.filtreDevise,
-    this.page,
-    this.pageSize
-  ).subscribe({
-    next: (res: any) => {
-      console.log('Réponse historique:', res);
-      this.historique = res.items;
-      this.totalCount = res.totalCount;
-    },
-    error: (err) => {
-      console.error('Erreur historique:', err);
-    }
-  });
-}
+    this.service.getHistorique(
+      this.filtreLibelle,
+      this.filtreJournal,
+      this.filtreDateDebut,
+      this.filtreDateFin,
+      this.filtreCompteComptable,
+      this.filtreRefPiece,
+      this.filtreDevise,
+      this.page,
+      this.pageSize
+    ).subscribe({
+      next: (res: any) => {
+        this.historique = res.items;
+        this.totalCount = res.totalCount;
+      },
+      error: (err) => {
+        console.error('Erreur historique:', err);
+      }
+    });
+  }
 
   rechercher(): void {
     this.page = 1;
@@ -69,5 +73,21 @@ export class HistoriqueComponent implements OnInit {
     this.page = 1;
     this.chargerHistorique();
   }
-  
+
+  allerAPage(page: number): void {
+    this.page = page;
+    this.chargerHistorique();
+  }
+
+  pagePrecedente(): void {
+    if (this.page > 1) {
+      this.allerAPage(this.page - 1);
+    }
+  }
+
+  pageSuivante(): void {
+    if (this.page < this.totalPages) {
+      this.allerAPage(this.page + 1);
+    }
+  }
 }

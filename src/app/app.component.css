@@ -1,30 +1,32 @@
+/* ===========================================
+   Barre de navigation
+   =========================================== */
 .navbar {
   background-color: rgb(0, 72, 153);
   color: white;
   width: 100%;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
-
 .navbar-inner {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 14px 20px;
+  padding: 14px 20px; /* même marge gauche/droite (20px) que .search-panel/:host */
   width: 100%;
   box-sizing: border-box;
 }
-
 .navbar-titre {
   font-size: 17px;
   font-weight: 600;
+  white-space: nowrap; /* évite que le titre pousse la navbar à s'élargir */
 }
-
 .navbar-liens {
   display: flex;
   gap: 24px;
   margin-left: auto;
+  flex-wrap: wrap; /* si l'écran est très étroit, les liens passent à la ligne
+                       plutôt que de forcer un débordement horizontal */
 }
-
 .navbar-liens a {
   color: white;
   text-decoration: none;
@@ -33,8 +35,8 @@
   padding: 6px 12px;
   border-radius: 4px;
   transition: background-color 0.2s ease;
+  white-space: nowrap;
 }
-
 .navbar-liens a:hover {
   background-color: rgba(255, 255, 255, 0.15);
 }

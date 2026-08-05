@@ -56,7 +56,12 @@
   </div>
 </div>
 
-<div class="titre-section">Historique des suppressions</div>
+<div class="titre-ligne">
+  <span class="titre-section">
+    Historique des suppressions
+    <span class="compteur">{{ totalCount }} suppressions</span>
+  </span>
+</div>
 
 <div class="table-wrapper">
 <table>
@@ -94,4 +99,19 @@
     </tr>
   </tbody>
 </table>
+
+<div class="pagination-bar">
+  <button (click)="allerAPage(1)" [disabled]="page === 1">«</button>
+  <button (click)="pagePrecedente()" [disabled]="page === 1">‹</button>
+
+  <input type="number" class="page-input" [(ngModel)]="page" (change)="allerAPage(page)" />
+
+  <button (click)="pageSuivante()" [disabled]="page === totalPages">›</button>
+  <button (click)="allerAPage(totalPages)" [disabled]="page === totalPages">»</button>
+
+  <span class="affichage-info">
+    Affichage de {{ (page - 1) * pageSize + 1 }} à {{ Math.min(page * pageSize, totalCount) }}
+    de {{ totalCount }} entrées
+  </span>
+</div>
 </div>
