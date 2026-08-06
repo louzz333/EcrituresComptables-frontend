@@ -10,6 +10,7 @@
 
   display: block;
   font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: var(--gris-fond); 
   width: 100%;
   padding: 20px;
   /* FIX PRINCIPAL : sans ceci, :host mesure 100% + 40px (20px de padding
