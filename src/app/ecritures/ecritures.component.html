@@ -145,7 +145,11 @@
         <td>{{ e.compte_comptable }}</td>
         <td class="text-rightd">{{ e.sens === 'D' ? e.montant : '__' }}</td>
         <td class="text-rightc">{{ e.sens === 'C' ? e.montant : '__' }}</td>
-        <td>{{ e.etatComptabilisation === 0 ? 'En attente' : 'Envoyé à Sage' }}</td>
+        <td>
+  <span class="badge-statut" [ngClass]="e.etatComptabilisation === 0 ? 'statut-attente' : 'statut-envoye'">
+    {{ e.etatComptabilisation === 0 ? 'En attente' : 'Envoyé à Sage' }}
+  </span>
+</td>
         <td>{{ e.reference_Piece }}</td>
         <td>{{ e.devise }}</td>
         <td>{{ e.libelle_Ecriture }}</td>
