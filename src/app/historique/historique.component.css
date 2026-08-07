@@ -288,3 +288,33 @@ tbody tr:hover {
   font-size: 13px;
   color: #6c757d;
 }
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--texte-gris);
+  background-color: white;
+  margin: -20px -20px 20px -20px; /* annule le padding du :host en haut/gauche/droite */
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--gris-bordure);
+}
+
+.breadcrumb a {
+  color: var(--texte-gris);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: var(--bleu-principal);
+  text-decoration: underline;
+}
+
+.breadcrumb-separator {
+  color: #bbb;
+}
+
+.breadcrumb-current {
+  color: rgb(37, 69, 84);
+  font-weight: 600;
+}
