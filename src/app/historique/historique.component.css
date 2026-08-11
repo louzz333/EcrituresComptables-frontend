@@ -318,3 +318,24 @@ tbody tr:hover {
   color: rgb(37, 69, 84);
   font-weight: 600;
 }
+.actions-groupe {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn-export {
+  background-color: white;
+  color: #2e7d32;
+  border: 1px solid #2e7d32;
+  padding: 9px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-export:hover {
+  background-color: #e8f5e9;
+}

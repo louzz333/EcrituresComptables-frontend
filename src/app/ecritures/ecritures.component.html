@@ -103,16 +103,19 @@
 
 <!-- ============ SECTION 3 : Titre + Tableau ============ -->
 <div class="titre-ligne">
-  <div class="titre-section">
-  Écritures comptables
-  <span class="compteur">{{ totalCount }} écritures</span>
-</div>
-  <button 
-    class="btn-danger" 
-    [disabled]="selectedIds.length === 0"
-    (click)="ouvrirConfirmationSuppression()">
-    Supprimer la sélection ({{ selectedIds.length }})
-  </button>
+  <span class="titre-section">
+    Ecritures comptable
+    <span class="compteur">{{ totalCount }} écritures</span>
+  </span>
+  <div class="actions-groupe">
+    <button class="btn-export" (click)="exporterExcel()">Exporter</button>
+    <button 
+      class="btn-danger" 
+      [disabled]="selectedIds.length === 0"
+      (click)="ouvrirConfirmationSuppression()">
+      Supprimer la sélection ({{ selectedIds.length }})
+    </button>
+  </div>
 </div>
 
 <div class="table-wrapper">

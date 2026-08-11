@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EcritureService } from '../ecriture.service';
 import { AuditSuppression } from '../audit-suppression';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-historique',
@@ -90,4 +91,31 @@ export class HistoriqueComponent implements OnInit {
       this.allerAPage(this.page + 1);
     }
   }
+
+  exporterExcel() {
+  this.service.getHistorique(
+    this.filtreLibelle, this.filtreJournal, this.filtreDateDebut, this.filtreDateFin,
+    this.filtreCompteComptable, this.filtreRefPiece, this.filtreDevise,
+    1, 999999
+  ).subscribe(data => {
+    const lignes = data.items.map((h: AuditSuppression) => ({
+      'N° Écriture': h.numeroEcriture,
+      'Date écriture': h.dateEcriture,
+      'Journal': h.journalEcriture,
+      'Compte': h.compteEcriture,
+      'Débit': h.sensEcriture === 'D' ? h.montantEcriture : '',
+      'Crédit': h.sensEcriture === 'C' ? h.montantEcriture : '',
+      'Référence': h.referenceEcriture,
+      'Devise': h.deviseEcriture,
+      'Libellé': h.libelle,
+      'Date suppression': h.dateSuppression,
+      'Motif': h.motif
+    }));
+
+    const feuille = XLSX.utils.json_to_sheet(lignes);
+    const classeur = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(classeur, feuille, 'Historique');
+    XLSX.writeFile(classeur, 'historique_suppressions.xlsx');
+  });
+}
 }

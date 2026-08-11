@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EcritureService } from '../ecriture.service';
 import { Ecriture } from '../ecriture';
 import { Kpis } from '../kpis';
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -153,6 +154,32 @@ isAllSelected(): boolean {
 
   isSelected(id: number): boolean {
   return this.selectedIds.includes(id);
+}
+
+ exporterExcel() {
+  this.service.getAll(
+    this.filtreLibelle, this.filtreJournal, this.filtreDateDebut, this.filtreDateFin,
+    this.filtreCompteComptable, this.filtreRefPiece, this.filtreDevise,
+    1, 999999
+  ).subscribe(data => {
+    const lignes = data.items.map(e => ({
+      'N° Pièce': e.n_Ecriture,
+      'Date': e.date,
+      'Journal': e.journal,
+      'Compte': e.compte_comptable,
+      'Débit': e.sens === 'D' ? e.montant : '',
+      'Crédit': e.sens === 'C' ? e.montant : '',
+      'Référence': e.reference_Piece,
+      'Devise': e.devise,
+      'Libellé': e.libelle_Ecriture,
+      'Statut': e.etatComptabilisation === 0 ? 'En attente' : 'Envoyé à Sage'
+    }));
+
+    const feuille = XLSX.utils.json_to_sheet(lignes);
+    const classeur = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(classeur, feuille, 'Écritures');
+    XLSX.writeFile(classeur, 'ecritures_comptables.xlsx');
+  });
 }
 
 }
