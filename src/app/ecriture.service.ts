@@ -96,4 +96,11 @@ export class EcritureService {
 
     return this.http.get<any>(`${config.apiUrl}/Ecritures/historique`, { params });
   }
+
+  getComptesComptables() {
+  return this.http.get<string[]>(`${config.apiUrl}/Ecritures/comptes`);
+  }
+  getComptesComptablesHistorique() {
+  return this.http.get<string[]>(`${config.apiUrl}/Ecritures/comptes-historique`);
+}
 }

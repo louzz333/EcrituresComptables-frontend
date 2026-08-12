@@ -33,6 +33,33 @@ export class EcrituresComponent implements OnInit {
 
   kpis: Kpis = { totalDebit: 0, totalCredit: 0, enAttente: 0, supprimeesCeMois: 0 };
 
+  comptesComptables: string[] = [];
+
+  suggestionsCompte: string[] = [];
+suggestionsOuvertes: boolean = false;
+
+filtrerComptes() {
+  const saisie = this.filtreCompteComptable?.toLowerCase() || '';
+  if (!saisie) {
+    this.suggestionsCompte = [];
+    this.suggestionsOuvertes = false;
+    return;
+  }
+  this.suggestionsCompte = this.comptesComptables.filter(c =>
+    c.toLowerCase().startsWith(saisie)
+  );
+  this.suggestionsOuvertes = this.suggestionsCompte.length > 0;
+}
+
+choisirCompte(compte: string) {
+  this.filtreCompteComptable = compte;
+  this.suggestionsOuvertes = false;
+}
+
+fermerSuggestions() {
+  setTimeout(() => this.suggestionsOuvertes = false, 150);
+}
+
   constructor(private service: EcritureService) {}
 
   get totalPages(): number {
@@ -48,6 +75,9 @@ export class EcrituresComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.service.getComptesComptables().subscribe(data => {
+      this.comptesComptables = data;
+    });
     this.service.getAll(this.filtreLibelle, this.filtreJournal, this.filtreDateDebut, this.filtreDateFin, this.filtreCompteComptable, this.filtreRefPiece, this.filtreDevise, this.pageActuelle, this.pageSize).subscribe(data => {
       this.ecritures = data.items;
       this.totalCount = data.totalCount;

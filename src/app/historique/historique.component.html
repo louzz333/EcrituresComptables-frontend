@@ -28,10 +28,26 @@
         <input type="text" [(ngModel)]="filtreDevise" />
       </div>
 
-      <div class="champ">
-        <label>Compte comptable</label>
-        <input type="text" [(ngModel)]="filtreCompteComptable" />
-      </div>
+      <div class="champ champ-autocomplete">
+  <label>Compte comptable</label>
+  <input 
+    type="text" 
+    [(ngModel)]="filtreCompteComptable" 
+    (input)="filtrerComptes()"
+    (focus)="filtrerComptes()"
+    (blur)="fermerSuggestions()"
+    autocomplete="off" />
+
+  <div class="suggestions-dropdown" *ngIf="suggestionsOuvertes">
+    <div 
+      class="suggestion-item" 
+      *ngFor="let c of suggestionsCompte" 
+      (mousedown)="choisirCompte(c)">
+      <span class="partie-tapee">{{ c.substring(0, filtreCompteComptable.length) }}</span>
+      <span class="partie-restante">{{ c.substring(filtreCompteComptable.length) }}</span>
+    </div>
+  </div>
+</div>
 
       <div class="champ">
         <label>Journal</label>

@@ -26,6 +26,32 @@ export class HistoriqueComponent implements OnInit {
   pageSize = 10;
   Math = Math;
 
+  comptesComptables: string[] = [];
+suggestionsCompte: string[] = [];
+suggestionsOuvertes: boolean = false;
+
+filtrerComptes() {
+  const saisie = this.filtreCompteComptable?.toLowerCase() || '';
+  if (!saisie) {
+    this.suggestionsCompte = [];
+    this.suggestionsOuvertes = false;
+    return;
+  }
+  this.suggestionsCompte = this.comptesComptables.filter(c =>
+    c.toLowerCase().startsWith(saisie)
+  );
+  this.suggestionsOuvertes = this.suggestionsCompte.length > 0;
+}
+
+choisirCompte(compte: string) {
+  this.filtreCompteComptable = compte;
+  this.suggestionsOuvertes = false;
+}
+
+fermerSuggestions() {
+  setTimeout(() => this.suggestionsOuvertes = false, 150);
+}
+
   constructor(private service: EcritureService) {}
 
   get totalPages(): number {
@@ -33,8 +59,11 @@ export class HistoriqueComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chargerHistorique();
-  }
+  this.service.getComptesComptablesHistorique().subscribe(data => {
+  this.comptesComptables = data;
+});
+  this.chargerHistorique();
+}
 
   chargerHistorique(): void {
     this.service.getHistorique(
