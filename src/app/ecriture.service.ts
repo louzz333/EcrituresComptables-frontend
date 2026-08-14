@@ -102,5 +102,10 @@ export class EcritureService {
   }
   getComptesComptablesHistorique() {
   return this.http.get<string[]>(`${config.apiUrl}/Ecritures/comptes-historique`);
-}
+  }
+  getJournaux() {
+  return this.http.get<string[]>(`${config.apiUrl}/Ecritures/journaux`);
+  }
+
+
 }

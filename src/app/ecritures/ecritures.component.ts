@@ -36,7 +36,9 @@ export class EcrituresComponent implements OnInit {
   comptesComptables: string[] = [];
 
   suggestionsCompte: string[] = [];
-suggestionsOuvertes: boolean = false;
+  suggestionsOuvertes: boolean = false;
+  
+  journaux: string[] = [];
 
 filtrerComptes() {
   const saisie = this.filtreCompteComptable?.toLowerCase() || '';
@@ -74,7 +76,35 @@ fermerSuggestions() {
     return result;
   }
 
+  suggestionsJournal: string[] = [];
+suggestionsJournalOuvertes: boolean = false;
+
+filtrerJournaux() {
+  const saisie = this.filtreJournal?.toLowerCase() || '';
+  if (!saisie) {
+    this.suggestionsJournal = this.journaux;
+    this.suggestionsJournalOuvertes = this.journaux.length > 0;
+    return;
+  }
+  this.suggestionsJournal = this.journaux.filter(j =>
+    j.toLowerCase().startsWith(saisie)
+  );
+  this.suggestionsJournalOuvertes = this.suggestionsJournal.length > 0;
+}
+
+choisirJournal(journal: string) {
+  this.filtreJournal = journal;
+  this.suggestionsJournalOuvertes = false;
+}
+
+fermerSuggestionsJournal() {
+  setTimeout(() => this.suggestionsJournalOuvertes = false, 150);
+}
+
   ngOnInit(): void {
+    this.service.getJournaux().subscribe(data => {
+    this.journaux = data;
+    });
     this.service.getComptesComptables().subscribe(data => {
       this.comptesComptables = data;
     });

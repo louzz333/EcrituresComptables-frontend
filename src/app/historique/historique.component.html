@@ -104,7 +104,7 @@
   <tbody>
     <tr *ngFor="let h of historique">
       <td>{{ h.numeroEcriture }}</td>
-      <td>{{ h.dateEcriture }}</td>
+      <td>{{ h.dateEcriture | date:'M/d/yyyy' }}</td>
       <td>{{ h.journalEcriture }}</td>
       <td>{{ h.compteEcriture }}</td>
       <td class="text-rightd">{{ h.sensEcriture === 'D' ? h.montantEcriture : '__' }}</td>
@@ -112,7 +112,7 @@
       <td>{{ h.referenceEcriture }}</td>
       <td>{{ h.deviseEcriture }}</td>
       <td>{{ h.libelle }}</td>
-      <td>{{ h.dateSuppression }}</td>
+      <td>{{ h.dateSuppression | date:'M/d/yyyy' }}</td>
       <td>{{ h.motif }}</td>
     </tr>
     <tr *ngIf="historique.length === 0">
