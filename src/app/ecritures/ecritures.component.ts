@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EcritureService } from '../ecriture.service';
 import { Ecriture } from '../ecriture';
 import { Kpis } from '../kpis';
-import * as XLSX from 'xlsx';
+import * as ExcelJS from 'exceljs';
 
 
 @Component({
@@ -216,29 +216,84 @@ isAllSelected(): boolean {
   return this.selectedIds.includes(id);
 }
 
- exporterExcel() {
+ async exporterExcel() {
   this.service.getAll(
     this.filtreLibelle, this.filtreJournal, this.filtreDateDebut, this.filtreDateFin,
     this.filtreCompteComptable, this.filtreRefPiece, this.filtreDevise,
     1, 999999
-  ).subscribe(data => {
-    const lignes = data.items.map(e => ({
-      'N° Pièce': e.n_Ecriture,
-      'Date': e.date,
-      'Journal': e.journal,
-      'Compte': e.compte_comptable,
-      'Débit': e.sens === 'D' ? e.montant : '',
-      'Crédit': e.sens === 'C' ? e.montant : '',
-      'Référence': e.reference_Piece,
-      'Devise': e.devise,
-      'Libellé': e.libelle_Ecriture,
-      'Statut': e.etatComptabilisation === 0 ? 'En attente' : 'Envoyé à Sage'
-    }));
+  ).subscribe(async data => {
+    const classeur = new ExcelJS.Workbook();
+    const feuille = classeur.addWorksheet('Écritures');
 
-    const feuille = XLSX.utils.json_to_sheet(lignes);
-    const classeur = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(classeur, feuille, 'Écritures');
-    XLSX.writeFile(classeur, 'ecritures_comptables.xlsx');
+    // Définition des colonnes : titre + largeur
+    feuille.columns = [
+      { header: 'N° Pièce', key: 'npiece', width: 14 },
+      { header: 'Date', key: 'date', width: 14 },
+      { header: 'Journal', key: 'journal', width: 12 },
+      { header: 'Compte', key: 'compte', width: 16 },
+      { header: 'Débit', key: 'debit', width: 14 },
+      { header: 'Crédit', key: 'credit', width: 14 },
+      { header: 'Référence', key: 'reference', width: 22 },
+      { header: 'Devise', key: 'devise', width: 10 },
+      { header: 'Libellé', key: 'libelle', width: 40 },
+      { header: 'Statut', key: 'statut', width: 16 }
+    ];
+
+    // Style de l'en-tête : bleu Involys, texte blanc, gras
+    feuille.getRow(1).eachCell(cell => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FF0078D4' }   // bleu Involys
+      };
+      cell.font = { color: { argb: 'FFFFFFFF' }, bold: true };
+      cell.alignment = { vertical: 'middle', horizontal: 'center' }; // ← centré
+    });
+
+    // petite fonction pour reformatter une date en M/d/yyyy
+    const formatDate = (valeur: any): string => {
+      if (!valeur) return '';
+      const d = new Date(valeur);
+      if (isNaN(d.getTime())) return valeur; // si ce n'est pas une date valide, on la laisse telle quelle
+      return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+    };
+
+    // Remplissage des lignes de données
+    data.items.forEach((e, index) => {
+      const ligne = feuille.addRow({
+        npiece: e.n_Ecriture,
+        date: formatDate(e.date),
+        journal: e.journal,
+        compte: e.compte_comptable,
+        debit: e.sens === 'D' ? e.montant : '',
+        credit: e.sens === 'C' ? e.montant : '',
+        reference: e.reference_Piece,
+        devise: e.devise,
+        libelle: e.libelle_Ecriture,
+        statut: e.etatComptabilisation === 0 ? 'En attente' : 'Envoyé à Sage'
+      });
+
+      // Alternance de vert clair / plus clair
+      const couleur = index % 2 === 0 ? 'FFEFF7EF' : 'FFF7FBF7';
+      ligne.eachCell(cell => {
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: couleur }
+        };
+        cell.alignment = { vertical: 'middle', horizontal: 'center' }; // ← centré
+      });
+    });
+
+    // Génération et téléchargement du fichier
+    const buffer = await classeur.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const url = window.URL.createObjectURL(blob);
+    const lien = document.createElement('a');
+    lien.href = url;
+    lien.download = 'ecritures_comptables.xlsx';
+    lien.click();
+    window.URL.revokeObjectURL(url);
   });
 }
 
