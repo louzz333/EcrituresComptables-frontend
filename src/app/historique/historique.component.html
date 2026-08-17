@@ -49,15 +49,27 @@
   </div>
 </div>
 
-      <div class="champ">
-        <label>Journal</label>
-        <select [(ngModel)]="filtreJournal">
-          <option value="">Tous les journaux</option>
-          <option value="ACH">ACH</option>
-          <option value="AWB">AWB</option>
-          <option value="CDM">CDM</option>
-        </select>
-      </div>
+      <div class="champ champ-autocomplete">
+  <label>Journal</label>
+  <input 
+    type="text" 
+    [(ngModel)]="filtreJournal" 
+    placeholder="Tous les journaux"
+    (input)="filtrerJournaux()"
+    (focus)="filtrerJournaux()"
+    (blur)="fermerSuggestionsJournal()"
+    autocomplete="off" />
+
+  <div class="suggestions-dropdown" *ngIf="suggestionsJournalOuvertes">
+    <div 
+      class="suggestion-item" 
+      *ngFor="let j of suggestionsJournal" 
+      (mousedown)="choisirJournal(j)">
+      <span class="partie-tapee">{{ j.substring(0, filtreJournal.length) }}</span>
+      <span class="partie-restante">{{ j.substring(filtreJournal.length) }}</span>
+    </div>
+  </div>
+</div>
 
       <div class="champ champ-double">
         <label>Date</label>
