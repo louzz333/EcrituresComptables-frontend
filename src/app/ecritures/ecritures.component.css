@@ -142,6 +142,7 @@
 .btn-secondaire:hover {
   background-color: #f0f0f0;
 }
+
 /* ===========================================
    3. KPIs
    =========================================== */
@@ -234,7 +235,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap; /* passe à la ligne plutôt que de déborder sur petit écran */
+  flex-wrap: wrap;
   gap: 12px;
   padding-bottom: 8px;
   border-bottom: 2px solid var(--gris-bordure);
@@ -279,7 +280,6 @@
   cursor: not-allowed;
 }
 
-
 /* ===========================================
    5. Tableau — 100% width, glissière INTERNE seulement
    =========================================== */
@@ -289,7 +289,7 @@
   background-color: white;
   border: 1px solid var(--gris-bordure);
   border-radius: 6px;
-  overflow-x: auto;   /* <- seule source de scroll horizontal autorisée */
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -309,12 +309,6 @@ thead .header-row th {
   white-space: nowrap;
 }
 
-thead .filter-row th {
-  padding: 8px 12px;
-  background-color: var(--gris-fond);
-  border-bottom: 2px solid var(--gris-bordure);
-}
-
 tbody td {
   padding: 10px 12px;
   border-bottom: 1px solid #eee;
@@ -332,6 +326,7 @@ tbody tr:hover {
   color: var(--texte-gris);
   padding: 30px;
 }
+
 .badge-statut {
   display: inline-block;
   padding: 4px 12px;
@@ -425,7 +420,7 @@ tbody tr:hover {
   padding: 24px;
   border-radius: 8px;
   min-width: 350px;
-  max-width: 90vw; /* pour rester contenu sur petits écrans */
+  max-width: 90vw;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   box-sizing: border-box;
 }
@@ -467,6 +462,7 @@ tbody tr:hover {
   background-color: #e0e0e0;
   color: #333;
 }
+
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -474,7 +470,7 @@ tbody tr:hover {
   font-size: 13px;
   color: var(--texte-gris);
   background-color: white;
-  margin: -20px -20px 20px -20px; /* annule le padding du :host en haut/gauche/droite */
+  margin: -20px -20px 20px -20px;
   padding: 14px 20px;
   border-bottom: 1px solid var(--gris-bordure);
 }
@@ -497,6 +493,7 @@ tbody tr:hover {
   color: rgb(37, 69, 84);
   font-weight: 600;
 }
+
 .actions-groupe {
   display: flex;
   gap: 10px;
@@ -518,6 +515,7 @@ tbody tr:hover {
 .btn-export:hover {
   background-color: #e8f5e9;
 }
+
 .champ-autocomplete {
   position: relative;
 }

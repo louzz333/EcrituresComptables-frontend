@@ -1,9 +1,9 @@
-
 <div class="breadcrumb">
   <a routerLink="/">Supervision écritures comptables</a>
   <span class="breadcrumb-separator">›</span>
   <span class="breadcrumb-current">Historique</span>
 </div>
+
 <!-- ============ SECTION : Recherche ============ -->
 <div class="search-panel">
   <div class="search-panel-header" (click)="rechercheAvanceeOuverte = !rechercheAvanceeOuverte">
@@ -29,47 +29,47 @@
       </div>
 
       <div class="champ champ-autocomplete">
-  <label>Compte comptable</label>
-  <input 
-    type="text" 
-    [(ngModel)]="filtreCompteComptable" 
-    (input)="filtrerComptes()"
-    (focus)="filtrerComptes()"
-    (blur)="fermerSuggestions()"
-    autocomplete="off" />
+        <label>Compte comptable</label>
+        <input
+          type="text"
+          [(ngModel)]="filtreCompteComptable"
+          (input)="filtrerComptes()"
+          (focus)="filtrerComptes()"
+          (blur)="fermerSuggestions()"
+          autocomplete="off" />
 
-  <div class="suggestions-dropdown" *ngIf="suggestionsOuvertes">
-    <div 
-      class="suggestion-item" 
-      *ngFor="let c of suggestionsCompte" 
-      (mousedown)="choisirCompte(c)">
-      <span class="partie-tapee">{{ c.substring(0, filtreCompteComptable.length) }}</span>
-      <span class="partie-restante">{{ c.substring(filtreCompteComptable.length) }}</span>
-    </div>
-  </div>
-</div>
+        <div class="suggestions-dropdown" *ngIf="suggestionsOuvertes">
+          <div
+            class="suggestion-item"
+            *ngFor="let c of suggestionsCompte"
+            (mousedown)="choisirCompte(c)">
+            <span class="partie-tapee">{{ c.substring(0, filtreCompteComptable.length) }}</span>
+            <span class="partie-restante">{{ c.substring(filtreCompteComptable.length) }}</span>
+          </div>
+        </div>
+      </div>
 
       <div class="champ champ-autocomplete">
-  <label>Journal</label>
-  <input 
-    type="text" 
-    [(ngModel)]="filtreJournal" 
-    placeholder="Tous les journaux"
-    (input)="filtrerJournaux()"
-    (focus)="filtrerJournaux()"
-    (blur)="fermerSuggestionsJournal()"
-    autocomplete="off" />
+        <label>Journal</label>
+        <input
+          type="text"
+          [(ngModel)]="filtreJournal"
+          placeholder="Tous les journaux"
+          (input)="filtrerJournaux()"
+          (focus)="filtrerJournaux()"
+          (blur)="fermerSuggestionsJournal()"
+          autocomplete="off" />
 
-  <div class="suggestions-dropdown" *ngIf="suggestionsJournalOuvertes">
-    <div 
-      class="suggestion-item" 
-      *ngFor="let j of suggestionsJournal" 
-      (mousedown)="choisirJournal(j)">
-      <span class="partie-tapee">{{ j.substring(0, filtreJournal.length) }}</span>
-      <span class="partie-restante">{{ j.substring(filtreJournal.length) }}</span>
-    </div>
-  </div>
-</div>
+        <div class="suggestions-dropdown" *ngIf="suggestionsJournalOuvertes">
+          <div
+            class="suggestion-item"
+            *ngFor="let j of suggestionsJournal"
+            (mousedown)="choisirJournal(j)">
+            <span class="partie-tapee">{{ j.substring(0, filtreJournal.length) }}</span>
+            <span class="partie-restante">{{ j.substring(filtreJournal.length) }}</span>
+          </div>
+        </div>
+      </div>
 
       <div class="champ champ-double">
         <label>Date</label>
@@ -97,54 +97,54 @@
 </div>
 
 <div class="table-wrapper">
-<table>
-  <thead>
-    <tr>
-      <th>N° Pièce</th>
-      <th>Date</th>
-      <th>Journal</th>
-      <th>Compte</th>
-      <th>Débit</th>
-      <th>Crédit</th>
-      <th>Référence</th>
-      <th>Devise</th>
-      <th>Libellé</th>
-      <th>Date suppression</th>
-      <th>Motif</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let h of historique">
-      <td>{{ h.numeroEcriture }}</td>
-      <td>{{ h.dateEcriture | date:'M/d/yyyy' }}</td>
-      <td>{{ h.journalEcriture }}</td>
-      <td>{{ h.compteEcriture }}</td>
-      <td class="text-rightd">{{ h.sensEcriture === 'D' ? h.montantEcriture : '__' }}</td>
-      <td class="text-rightc">{{ h.sensEcriture === 'C' ? h.montantEcriture : '__' }}</td>
-      <td>{{ h.referenceEcriture }}</td>
-      <td>{{ h.deviseEcriture }}</td>
-      <td>{{ h.libelle }}</td>
-      <td>{{ h.dateSuppression | date:'M/d/yyyy' }}</td>
-      <td>{{ h.motif }}</td>
-    </tr>
-    <tr *ngIf="historique.length === 0">
-      <td colspan="11" class="empty-message">Aucune suppression enregistrée</td>
-    </tr>
-  </tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>N° Pièce</th>
+        <th>Date</th>
+        <th>Journal</th>
+        <th>Compte</th>
+        <th>Débit</th>
+        <th>Crédit</th>
+        <th>Référence</th>
+        <th>Devise</th>
+        <th>Libellé</th>
+        <th>Date suppression</th>
+        <th>Motif</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let h of historique">
+        <td>{{ h.numeroEcriture }}</td>
+        <td>{{ h.dateEcriture | date:'M/d/yyyy' }}</td>
+        <td>{{ h.journalEcriture }}</td>
+        <td>{{ h.compteEcriture }}</td>
+        <td class="text-rightd">{{ h.sensEcriture === 'D' ? h.montantEcriture : '__' }}</td>
+        <td class="text-rightc">{{ h.sensEcriture === 'C' ? h.montantEcriture : '__' }}</td>
+        <td>{{ h.referenceEcriture }}</td>
+        <td>{{ h.deviseEcriture }}</td>
+        <td>{{ h.libelle }}</td>
+        <td>{{ h.dateSuppression | date:'M/d/yyyy' }}</td>
+        <td>{{ h.motif }}</td>
+      </tr>
+      <tr *ngIf="historique.length === 0">
+        <td colspan="11" class="empty-message">Aucune suppression enregistrée</td>
+      </tr>
+    </tbody>
+  </table>
 
-<div class="pagination-bar">
-  <button (click)="allerAPage(1)" [disabled]="page === 1">«</button>
-  <button (click)="pagePrecedente()" [disabled]="page === 1">‹</button>
+  <div class="pagination-bar">
+    <button (click)="allerAPage(1)" [disabled]="page === 1">«</button>
+    <button (click)="pagePrecedente()" [disabled]="page === 1">‹</button>
 
-  <input type="number" class="page-input" [(ngModel)]="page" (change)="allerAPage(page)" />
+    <input type="number" class="page-input" [(ngModel)]="page" (change)="allerAPage(page)" />
 
-  <button (click)="pageSuivante()" [disabled]="page === totalPages">›</button>
-  <button (click)="allerAPage(totalPages)" [disabled]="page === totalPages">»</button>
+    <button (click)="pageSuivante()" [disabled]="page === totalPages">›</button>
+    <button (click)="allerAPage(totalPages)" [disabled]="page === totalPages">»</button>
 
-  <span class="affichage-info">
-    Affichage de {{ (page - 1) * pageSize + 1 }} à {{ Math.min(page * pageSize, totalCount) }}
-    de {{ totalCount }} entrées
-  </span>
-</div>
+    <span class="affichage-info">
+      Affichage de {{ (page - 1) * pageSize + 1 }} à {{ Math.min(page * pageSize, totalCount) }}
+      de {{ totalCount }} entrées
+    </span>
+  </div>
 </div>

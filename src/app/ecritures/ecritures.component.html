@@ -3,6 +3,7 @@
   <span class="breadcrumb-separator">›</span>
   <span class="breadcrumb-current">Écritures</span>
 </div>
+
 <!-- ============ SECTION 1 : KPIs ============ -->
 <div class="kpi-container">
   <div class="kpi-card kpi-attente">
@@ -45,7 +46,8 @@
     <strong>{{ kpis.supprimeesCeMois | number }}</strong>
   </div>
 </div>
- <!-- ============ SECTION 2 : Recherche  ============ -->
+
+<!-- ============ SECTION 2 : Recherche ============ -->
 <div class="search-panel">
   <div class="search-panel-header" (click)="rechercheAvanceeOuverte = !rechercheAvanceeOuverte">
     <span class="chevron" [class.open]="rechercheAvanceeOuverte">▾</span>
@@ -70,47 +72,47 @@
       </div>
 
       <div class="champ champ-autocomplete">
-  <label>Compte comptable</label>
-  <input 
-    type="text" 
-    [(ngModel)]="filtreCompteComptable" 
-    (input)="filtrerComptes()"
-    (focus)="filtrerComptes()"
-    (blur)="fermerSuggestions()"
-    autocomplete="off" />
+        <label>Compte comptable</label>
+        <input
+          type="text"
+          [(ngModel)]="filtreCompteComptable"
+          (input)="filtrerComptes()"
+          (focus)="filtrerComptes()"
+          (blur)="fermerSuggestions()"
+          autocomplete="off" />
 
-  <div class="suggestions-dropdown" *ngIf="suggestionsOuvertes">
-    <div 
-      class="suggestion-item" 
-      *ngFor="let c of suggestionsCompte" 
-      (mousedown)="choisirCompte(c)">
-      <span class="partie-tapee">{{ c.substring(0, filtreCompteComptable.length) }}</span>
-      <span class="partie-restante">{{ c.substring(filtreCompteComptable.length) }}</span>
-    </div>
-  </div>
-</div>
+        <div class="suggestions-dropdown" *ngIf="suggestionsOuvertes">
+          <div
+            class="suggestion-item"
+            *ngFor="let c of suggestionsCompte"
+            (mousedown)="choisirCompte(c)">
+            <span class="partie-tapee">{{ c.substring(0, filtreCompteComptable.length) }}</span>
+            <span class="partie-restante">{{ c.substring(filtreCompteComptable.length) }}</span>
+          </div>
+        </div>
+      </div>
 
       <div class="champ champ-autocomplete">
-  <label>Journal</label>
-  <input 
-    type="text" 
-    [(ngModel)]="filtreJournal" 
-    placeholder="Tous les journaux"
-    (input)="filtrerJournaux()"
-    (focus)="filtrerJournaux()"
-    (blur)="fermerSuggestionsJournal()"
-    autocomplete="off" />
+        <label>Journal</label>
+        <input
+          type="text"
+          [(ngModel)]="filtreJournal"
+          placeholder="Tous les journaux"
+          (input)="filtrerJournaux()"
+          (focus)="filtrerJournaux()"
+          (blur)="fermerSuggestionsJournal()"
+          autocomplete="off" />
 
-  <div class="suggestions-dropdown" *ngIf="suggestionsJournalOuvertes">
-    <div 
-      class="suggestion-item" 
-      *ngFor="let j of suggestionsJournal" 
-      (mousedown)="choisirJournal(j)">
-      <span class="partie-tapee">{{ j.substring(0, filtreJournal.length) }}</span>
-      <span class="partie-restante">{{ j.substring(filtreJournal.length) }}</span>
-    </div>
-  </div>
-</div>
+        <div class="suggestions-dropdown" *ngIf="suggestionsJournalOuvertes">
+          <div
+            class="suggestion-item"
+            *ngFor="let j of suggestionsJournal"
+            (mousedown)="choisirJournal(j)">
+            <span class="partie-tapee">{{ j.substring(0, filtreJournal.length) }}</span>
+            <span class="partie-restante">{{ j.substring(filtreJournal.length) }}</span>
+          </div>
+        </div>
+      </div>
 
       <div class="champ champ-double">
         <label>Date</label>
@@ -137,8 +139,8 @@
   </span>
   <div class="actions-groupe">
     <button class="btn-export" (click)="exporterExcel()">Exporter</button>
-    <button 
-      class="btn-danger" 
+    <button
+      class="btn-danger"
       [disabled]="selectedIds.length === 0"
       (click)="ouvrirConfirmationSuppression()">
       Supprimer la sélection ({{ selectedIds.length }})
@@ -151,10 +153,10 @@
     <thead>
       <tr class="header-row">
         <th>
-  <input type="checkbox"
-         [checked]="isAllSelected()"
-         (change)="toggleSelectAll($event)" />
-</th>
+          <input type="checkbox"
+                 [checked]="isAllSelected()"
+                 (change)="toggleSelectAll($event)" />
+        </th>
         <th>N° Pièce</th>
         <th>Date</th>
         <th>Journal</th>
@@ -166,14 +168,13 @@
         <th>Devise</th>
         <th>Libellé</th>
       </tr>
-      
     </thead>
     <tbody>
       <tr *ngFor="let e of ecritures">
         <td>
-         <input type="checkbox" 
-         [checked]="isSelected(e.cleMvt)" 
-         (change)="toggleSelection(e.cleMvt)" />
+          <input type="checkbox"
+                 [checked]="isSelected(e.cleMvt)"
+                 (change)="toggleSelection(e.cleMvt)" />
         </td>
         <td>{{ e.n_Ecriture }}</td>
         <td>{{ e.date | date:'M/d/yyyy' }}</td>
@@ -182,10 +183,10 @@
         <td class="text-rightd">{{ e.sens === 'D' ? e.montant : '__' }}</td>
         <td class="text-rightc">{{ e.sens === 'C' ? e.montant : '__' }}</td>
         <td>
-  <span class="badge-statut" [ngClass]="e.etatComptabilisation === 0 ? 'statut-attente' : 'statut-envoye'">
-    {{ e.etatComptabilisation === 0 ? 'En attente' : 'Envoyé à Sage' }}
-  </span>
-</td>
+          <span class="badge-statut" [ngClass]="e.etatComptabilisation === 0 ? 'statut-attente' : 'statut-envoye'">
+            {{ e.etatComptabilisation === 0 ? 'En attente' : 'Envoyé à Sage' }}
+          </span>
+        </td>
         <td>{{ e.reference_Piece }}</td>
         <td>{{ e.devise }}</td>
         <td>{{ e.libelle_Ecriture }}</td>
@@ -196,6 +197,7 @@
     </tbody>
   </table>
 </div>
+
 <!-- ============ SECTION 4 : suppression ============ -->
 <div class="modal-overlay" *ngIf="confirmationOuverte">
   <div class="modal-content">

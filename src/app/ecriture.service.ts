@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Ecriture } from './ecriture';
 import { EcriturePagineeResult } from './ecriture-paginee-result';
 import { Kpis } from './kpis';
-import { AuditSuppression } from './audit-suppression'; 
 import { Observable } from 'rxjs';
 import { config } from './config';
 
@@ -12,16 +10,16 @@ import { config } from './config';
 })
 export class EcritureService {
 
-  private formatDate(date: Date|string): string {
+  constructor(private http: HttpClient) { }
+
+  private formatDate(date: Date | string): string {
     if (typeof date === 'string') {
       return date;
     }
     return date.toISOString().split('T')[0];
   }
 
-  constructor(private http: HttpClient) { }
-
-  getAll(libelle?: string, journal?: string, datedebut?: Date|string, datefin?: Date|string, comptecomptable?: string, refpiece?: string, devise?: string, page: number = 1, pageSize: number = 10) {
+  getAll(libelle?: string, journal?: string, datedebut?: Date | string, datefin?: Date | string, comptecomptable?: string, refpiece?: string, devise?: string, page: number = 1, pageSize: number = 10) {
     let url = `${config.apiUrl}/Ecritures`;
     let parametres: string[] = [];
 
@@ -42,17 +40,8 @@ export class EcritureService {
     return this.http.get<EcriturePagineeResult>(url);
   }
 
-  getKpis() {
-    return this.http.get<Kpis>(`${config.apiUrl}/Ecritures/kpis`);
-  }
 
-  supprimerEcritures(ids: number[], motif?: string) {
-    return this.http.delete(`${config.apiUrl}/Ecritures`, {
-      body: { ids: ids, motif: motif }
-    });
-  }
-
-  getAllIds(libelle?: string, journal?: string, datedebut?: Date|string, datefin?: Date|string, comptecomptable?: string, refpiece?: string, devise?: string) {
+  getAllIds(libelle?: string, journal?: string, datedebut?: Date | string, datefin?: Date | string, comptecomptable?: string, refpiece?: string, devise?: string) {
     let url = `${config.apiUrl}/Ecritures/ids`;
     let parametres: string[] = [];
 
@@ -69,6 +58,16 @@ export class EcritureService {
     }
 
     return this.http.get<number[]>(url);
+  }
+
+  getKpis() {
+    return this.http.get<Kpis>(`${config.apiUrl}/Ecritures/kpis`);
+  }
+
+  supprimerEcritures(ids: number[], motif?: string) {
+    return this.http.delete(`${config.apiUrl}/Ecritures`, {
+      body: { ids: ids, motif: motif }
+    });
   }
 
   getHistorique(
@@ -98,14 +97,14 @@ export class EcritureService {
   }
 
   getComptesComptables() {
-  return this.http.get<string[]>(`${config.apiUrl}/Ecritures/comptes`);
+    return this.http.get<string[]>(`${config.apiUrl}/Ecritures/comptes`);
   }
+
   getComptesComptablesHistorique() {
-  return this.http.get<string[]>(`${config.apiUrl}/Ecritures/comptes-historique`);
+    return this.http.get<string[]>(`${config.apiUrl}/Ecritures/comptes-historique`);
   }
+
   getJournaux() {
-  return this.http.get<string[]>(`${config.apiUrl}/Ecritures/journaux`);
+    return this.http.get<string[]>(`${config.apiUrl}/Ecritures/journaux`);
   }
-
-
 }
